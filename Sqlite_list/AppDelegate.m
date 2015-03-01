@@ -12,6 +12,21 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    //將資料庫檔案複製到具有寫入權限的目錄
+    NSFileManager *fm = [[NSFileManager alloc]init];
+    NSString *src = [[NSBundle mainBundle]pathForResource:@"test" ofType:@"sqlite"];
+    NSString *dst = [NSString stringWithFormat:@"%@/Documents/test.sqlite",NSHomeDirectory()];
+    
+    //APP啓用的時候在@/Documents 沒有資料庫
+    //從APP裡面把tjmb資料庫拷貝到 @/Documents/ 資料夾下
+    //拷貝完資料庫後,刪除掉App裡面的資料庫
+    
+    //檢查目的地的檔案是否存在，如果不存在則複製資料庫
+    if(![fm fileExistsAtPath:dst]){
+        [fm copyItemAtPath:src toPath:dst error:nil];
+        [fm removeItemAtPath:src error:nil];
+    }
     // Override point for customization after application launch.
     return YES;
 }
